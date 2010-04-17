@@ -4,14 +4,19 @@
 <html lang="en">
 <head>
     <title>Console Fix test</title>
+    <style>
+        body{
+            font-family:sans-serif;
+        }
+    </style>
     <script src="../debugging/consoleFix.js"></script>
     <script>
-        console.time("foo time");
-        console.log("Test LOG");
+        console.log("Test LOG", "Test", "running", "arguments", "together");
         console.info("Test INFO");
         console.warn("Test WARN");
         console.debug("Test DEBUG");
         console.error("Test ERROR");
+        console.time("foo time");
         console.assert(true == true);
         console.count();
         console.group("myGroup");
@@ -19,6 +24,7 @@
         console.groupEnd();
         console.timeEnd("foo time");
         console.trace();
+
     </script>
 </head>
 <body>
