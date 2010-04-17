@@ -1,5 +1,7 @@
 // Club AJAX General Purpose Code
 //
+// Console Tabs
+//
 // author:
 //		Mike Wilcox
 // site:
@@ -8,15 +10,23 @@
 //		http://groups.google.com/group/clubajax
 //
 // clubajax.debugging.tabs
-//	DESCIPTION:
+//
+//	DESCRIPTION:
 //		Adds tabbing functionality to the console, whether that be Firebug
 //		or any other debugger that supports spaces (if HTML is used,
 //		multiple spaces become one).
+//
 //	properties:
 //		console.tabLength: Number (defaults to 10)
 //			The amount of characters between tabs
 //		console.justify: String (defaults to left)
 //			Whether the tabs are right, left or center justified
+//		console.round: Boolean (defaults to false)
+//			Rounds any number arguments. Great if you don't want
+//			crazy JavaScript decimals like 3.000000001 in your lists.
+//		console.pipe: Boolean (defaults to true)
+//			Adds a | between tabs, only when centered.
+//
 // methods:
 //		console.pad
 //			arguments: expects one, can be anything
@@ -43,24 +53,37 @@
 //
 //
 (function(){
+	window.id = "global"
 	var initTabs = function(){
-		console.tabLength = 10;
-		console.justify = "left";
-		console.pad = function(s){
-			s = s+""
-			for( var i=s.length; i<this.tabLength; i++){
-				s = this.justify=="left" ? s + " " : " " + s;
+		var cn = console;
+		cn.id = "console";
+		cn.tabLength = 10;
+		cn.justify = "left";
+		cn.round = true;
+		cn.pipe = true;
+		cn.pad = function(s){
+			s = typeof(s)=="number" && cn.round ? Math.ceil(s) : s;
+			s = s+"";
+			var c = " ",
+				t = cn.tabLength,
+				len = (t-s.length);
+			for( var i=0; i<len; i++){
+				if(cn.justify=="center"){
+					s = i < len/2 ? s + c : c + s;
+				}else{
+					s = cn.justify=="left" ? s + c : c + s;
+				}
 			}
+			if(cn.justify=="center" && cn.pipe){ s+= "|"; }
 			return s;
 		}
-		console.tabs = function(){
+		cn.tabs = function(){
 			var msg = "";
 			for(var i=0; i<arguments.length; i++){
-				msg += this.pad(arguments[i]);
+				msg += cn.pad(arguments[i]);
 			}
-			this.log.apply(this, [msg]);
+			cn.log(msg)
 		}
 	}
-	// we may need to check for IE8 here. Its console is hard to detect.
-	if(window.console){ initTabs(); }
+	if(window.console && window.console.log){ initTabs(); }
 })();
