@@ -1,0 +1,60 @@
+#rand.
+
+= Randomizer =
+
+The Randomizer library is great for producing mock data. Allows dozens of ways to randomize numbers, strings, words, sentences, and dates. Includes tiny libraries of the most commonly used words (in order), the most commonly used letters (in order) and personal names that can be used as first or last. For making sentences, "wurds" are used - words with scrambled vowels so they aren't actual words, but look more like lorem ipsum. Change the property realWords to true to use "words" instead of "wurds" (it can also produce humorous results).
+
+== USAGE ==
+    include file:
+        <script src="clubajax/lang/rand.js"></script>
+
+== Tests ==
+    See tests/rand.html
+
+== Properties ==
+    * realWords: Boolean
+        Default false. Randomly generated sentences, titles, and words by default use "wurds" - words with scrambled vowels so they aren't actual words, but look more like lorem ipsum.
+    * words: Array
+        The array of words used for mock sentences and titles. List is arranged by most commonly used in writing, so using a weight will return more common words.
+    * wurds: Array
+        The default content used for sentences and titles. Wurds are words with their vowels scrambled to simulate lorem ipsum.
+    * letters: Array
+        All 26 characters in the alphabet, arranged by most common used in writing.
+
+== Methods ==
+    * loop
+       Similar to a forEach, but instead of an array as the first argument, pass in a number. The next argument, the function will be called that many times. The optional third argument is the context (this).
+{{{
+rand.loop(3, function(i){
+    console.log("loops three times");
+}, this);
+}}}
+
+    * trim
+        Removes spaces from both ends of a string.
+{{{
+var s = rand.trim("  too much space   ");
+s == "too much space";
+}}} 
+
+    * pad
+        Adds a zero to the beginning of a number if it is only one digit. Returns a string.
+{{{
+var n1 = rand.pad(9);
+var n2 = rand.pad(10);
+n1 == "09";
+n2 == "10";
+}}}
+
+    * cap
+        Capitalizes the first letter of a string.
+{{{
+var s = rand.cap("mike wrote this.");
+s == "Mike write this.";
+}}}
+        
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _ita lic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
