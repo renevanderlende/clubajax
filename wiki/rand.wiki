@@ -22,7 +22,7 @@ The Randomizer library is great for producing mock data. Allows dozens of ways t
         All 26 characters in the alphabet, arranged by most common used in writing.
 
 == Methods ==
-    * loop
+    * loop _(amount, function, content)_
        Similar to a forEach, but instead of an array as the first argument, pass in a number. The next argument, the function will be called that many times. The optional third argument is the context (this).
 {{{
 rand.loop(3, function(i){
@@ -30,14 +30,14 @@ rand.loop(3, function(i){
 }, this);
 }}}
 
-    * trim
+    * trim _(string)_
         Removes spaces from both ends of a string.
 {{{
 var s = rand.trim("  too much space   ");
 s == "too much space";
 }}} 
 
-    * pad
+    * pad _(string)_
         Adds a zero to the beginning of a number if it is only one digit. Returns a string.
 {{{
 var n1 = rand.pad(9);
@@ -46,15 +46,42 @@ n1 == "09";
 n2 == "10";
 }}}
 
-    * cap
+    * cap _(string)_
         Capitalizes the first letter of a string.
 {{{
 var s = rand.cap("mike wrote this.");
 s == "Mike write this.";
 }}}
         
+    * weight _(number, exponent)_
+        This method is mostly for internal use, but a _weight_ argument is used in other methods which calls this. The first argument is a float between zero and 1. The second is an exponent, which can be any number (although the decimals between 0 and 1 don't work as expected). Whole numbers or decimals over 1 can be used to weight a return closer to the beginning of a list. Negative numbers will weight the return closer to the end of a list. Decimals can be used if they are less then -1 or greater than 1.
+{{{
+var little = rand.weight(.5, 5);
+var big = rand.weight(.5, -5);
+little == 0.03125;
+big == 0.96875;
+}}}
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _ita lic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+    * n _(number weight)_
+        The key method. Returns a whole number between zero and the amount of first argument passed. Second argument is the weight. Larger positive weight returns closer to zero, larger negative weight returns closer to the first argument passed.
+{{{
+var r1 = rand.n(10); // random number between 0-10, no weight
+var r2 = rand.n(100, 2); // random number between 0-100, weighted toward 0
+var r3 = rand.n(500, -5); // random number between 0-500, weighted toward 500
+}}}
+
+    * range _(minimum, maximum, weight)_
+        Returns a random number ranging between the first and second arguments, weighted.
+{{{
+var r1 = rand.range(10, 20, 1); // returns number between 10 and 20, weighted towards 10
+}}}
+
+    * element _(thing, weight)_
+        Will return a random element of whatever object is passed. The first argument can be anything. If an object is passed, one of the objects values will be returned. If an array is passed,
+            * Object: One of the objects values will be returned.
+            * Array: One of the array elements is returned.
+            * Number: Like calling rand.n(num);
+            * String: Returns differently depending on the format (determined in this order):
+                * Has a period: Assumed to be a paragraph, and will return a random sentence.
+                * Has a space: Assumed to be a sentence and will return a random word.
+                * Else: Returns a random character.
