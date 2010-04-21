@@ -18,6 +18,8 @@ The Randomizer library is great for producing mock data. Allows dozens of ways t
         The array of words used for mock sentences and titles. List is arranged by most commonly used in writing, so using a weight will return more common words.
     * wurds: Array
         The default content used for sentences and titles. Wurds are words with their vowels scrambled to simulate lorem ipsum.
+    * names: Array
+        An array of names chosen because they can be used as first or last names.
     * letters: Array
         All 26 characters in the alphabet, arranged by most common used in writing.
 
@@ -77,7 +79,7 @@ var r1 = rand.range(10, 20, 1); // returns number between 10 and 20, weighted to
 }}}
 
     * element _(thing, weight)_
-        Will return a random element of whatever object is passed. The first argument can be anything. If an object is passed, one of the objects values will be returned. If an array is passed,
+        Will return a random element of whatever object is passed. The first argument can be anything. 
             * Object: One of the objects values will be returned.
             * Array: One of the array elements is returned.
             * Number: Like calling rand.n(num);
@@ -85,3 +87,38 @@ var r1 = rand.range(10, 20, 1); // returns number between 10 and 20, weighted to
                 * Has a period: Assumed to be a paragraph, and will return a random sentence.
                 * Has a space: Assumed to be a sentence and will return a random word.
                 * Else: Returns a random character.
+{{{
+rand.element({a:1, b:"rand", c:[1,2,3]}); // would return either 1, "rand" or [1,2,3]
+rand.element([1,2,3]); // returns either 1,2, or 3
+rand.element(3); // returns between 0-3
+rand.element("Hello. How are you."); // Returns either "Hello." or "How are you."
+rand.element("How are you"); // returns either "How", "are", or "you"
+rand.element("alpha"); // returns one of the characters
+}}}
+
+    * chars _(minimum, maximum, weight)_
+        Will return a string of random characters with a random length between the minimum and maximum passed values, with an optional weight.
+{{{
+rand.chars(3, 12, -3); // returns a string of random characters between 3-12 long, weighted toward 12.
+}}}
+    * name _(caseOptions)_
+        Returns a random proper name from a list chosen because they can be used as first or last names. _caseOptions_ : 0 or undefined returns lower case, 1 returns title case, and 2 returns upper case.
+{{{
+rand.name(2); // could return ARTHUR
+}}}
+
+    * bignumber _(length)_
+        Returns a stringified number, the length as passed by the argument.
+{{{
+rand.bignumber(10); // May return "0275397661";
+}}}
+
+    * date _(minDate, maxDate, delimiter, weight)_
+        Returns a random date. minDate and maxDate arguments can be either date objects or anything that can be converted into a date object, such as the seconds from 1970, or a formatted string like "11/20/1964".
+            * No options: Will return a date object between today and one year from today.
+            * minDate only: Returns object between passed date and one year from that.
+            * minDate, maxDate: Returns object between passed dates.
+            * delimiter: Two options. If the string "time" is passed, returns the date as seconds from 1970. Anything else returns a string using the delimiter. Passing "-" may return "11-20-1964".
+            * weight: Weights the two date objects for the random return.
+
+ 
