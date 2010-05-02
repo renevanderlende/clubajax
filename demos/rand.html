@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd"
+    >
+<html lang="en">
+<head>
+    <title>Mock Data Randomizer Demo</title>
+	<script src="../lang/rand.js"></script>
+    <script>
+
+
+	var byId = function(id){
+		return document.getElementById(id);
+	}
+	window.onload = function(){
+		byId("legend").innerHTML = rand.title(3,6)
+		byId("firstname").value = rand.name();
+		byId("lastname").value = rand.name();
+		byId("dob").value = rand.date({min:"1/1/1960", max:"1/1/1972", delimiter:"/"});
+		byId("ss").value = rand.bignumber(10);
+		byId("state").value = rand.element("TX,TN,AL,AK,MI,OH,CA");
+		byId("zip").value = rand.bignumber(5);
+
+		var sel = byId("sel");
+		var i=5; while(i--){
+			var opt = document.createElement('option');
+			opt.text = rand.name();
+			opt.value = rand.n();
+			try {
+				sel.add(opt, null);
+			}catch(e){
+				sel.add(opt); // IE
+			}
+		};
+
+		var radios = document.forms[0].rd
+		for(var i=0; i<radios.length;i++){
+			radios[i].checked = false;
+		}
+		rand.element(radios).checked = "checked";
+
+		byId("chk").checked = rand.bool() ? "checked" : false;
+
+		var list = byId("list");
+		var i=20; while(i--){
+			var num = '<span class="num">'+rand.pad(20-	i)+'</span>';
+			var site = "http://"+rand.site()+".com"
+			var ahref = '<span class="site"><a href="#">'+site+'</a> '+rand.date({delimiter:"/"})+'</span>';
+			var title = '<a href="#" class="title">'+rand.title(6,9)+'</a>';
+			var desc = '<div class="desc">'+rand.sentences(5,8,4,7)+'</div>'
+			list.innerHTML += '<div class="item">'+num+title+desc+ahref+'</div>';
+		}
+
+
+		var ar = [];
+		var i=3; while(i--){
+			ar.push(
+				'{site:"http://'+rand.site()+'.com",' +
+				'date:"'+rand.date({delimiter:"/", yearRange:-1})+'",' +
+				'title:"'+rand.title(3,4)+'",' +
+				'desc:"'+rand.sentences(2,3,3,5)+'"}'
+			);
+		}
+		var json = "["+ar.join(",")+"]";
+		console.log(json);
+		byId("ta").value = json;
+		//console.dir(eval("("+json+")"));
+
+		//rand.json('site;date({delimiter:"/", yearRange:-1})')
+
+		var story = byId("story");
+		rand.real = true;
+		story.getElementsByTagName("H2")[0].innerHTML = rand.title(4,5);
+		story.getElementsByTagName("div")[0].innerHTML = rand.sentences(1,1,15,20);
+		story.getElementsByTagName("cite")[0].innerHTML = "&mdash; by " + rand.name()+" "+rand.name();
+		var els = story.getElementsByTagName("p");
+		for(var i=0; i<els.length;i++){
+			els[i].innerHTML = rand.sentences(8, 12, 4, 9);
+		}
+
+		var ft = document.body.getElementsByTagName("small")[0];
+		ft.style.backgroundColor = rand.color();
+		ft.style.border = rand.n(10)+"px solid "+rand.color();
+		ft.style.backgroundColor = rand.color(5);
+		ft.style.color = rand.color(-5);
+
+	}
+    </script>
+    <style>
+		body{
+			font-family:sans-serif;
+			padding:10px;
+		}
+        #list{
+			width:394px;
+			height:150px;
+			overflow:auto;
+			border:1px solid #ccc;
+			margin-left:2px;
+			margin-top:15px;
+		}
+		.item{
+			overflow:hidden;
+			clear:both;
+			position:relative;
+			margin-bottom:10px;
+			padding:3px;
+		}
+		.item .num{
+			display:block;
+			font-size:30px;
+			width:36px;
+			height:30px;
+			text-align:right;
+			position:absolute;
+		}
+		.item .title{
+			display:block;
+			position:absolute;
+			width:330px;
+			right:5px;
+			font-weight:bold;
+		}
+		.item .desc{
+			margin-top:35px;
+			font-size:11px;
+		}
+		.item .site{
+			display:block;
+			font-size:12px;
+			color:#666;
+		}
+		.item .site a{
+			color:green;
+		}
+
+		form{
+			width:400px;
+			position:relative;
+		}
+		form label{
+			display:block;
+			width:70px;
+			position:absolute;
+			text-align:right;
+			padding-right:10px;
+			font-size:12px;
+			line-height:22px;
+		}
+		form input, form select{
+			margin-left:75px;
+			margin-bottom:10px;
+			margin-right:70px;
+			width:90px;
+		}
+		#leftPane, #story{
+			display:block;
+			float:left;
+			width:420px;
+		}
+		small{
+			display:block;
+			clear:both;
+			margin-top:40px;
+		}
+		#wrap{
+			overflow:hidden;
+		}
+		#story{
+			font-family:"Georgia serif";
+		}
+		#story h2{
+			padding-top:0px;
+			margin-top:0px;
+			font-size:24px;
+		}
+		#story div{
+			font-size:18px;
+		}
+		#story p{
+			font-size:14px;
+		}
+		#sub{
+			width:100px;
+			position:absolute;
+			right:20px;
+			top:20px;
+		}
+		#sub label{
+			width:50px;
+		}
+		#sub input{
+			margin:0 0 0 30px;
+		}
+		#ta{
+			width:400px;
+			height:100px;
+			margin-top:10px;
+		}
+		small{
+			display:block;
+			width:820px;
+			text-align:center;
+			padding:4px;
+			border:1px solid #0000FF;
+		}
+		#caLogo{
+			background:url(http://clubajax.org/wp-content/themes/clubajax/img/logo.png) no-repeat;
+			width:300px;
+			height:57px;
+			position:absolute;
+			right:10px;
+			top:10px;
+
+		}
+    </style>
+</head>
+<body>
+    <h1>Mock Data Randomizer Demo</h1>
+	<div id="caLogo"></div>
+	<div id="wrap">
+		<div id="leftPane">
+			<form>
+				<fieldset>
+				<legend id="legend"></legend>
+					<label>First Name:</label><input type="text" id="firstname" />
+					<label>Last Name:</label><input type="text" id="lastname" />
+					<label>Date of Birth:</label><input type="text" id="dob" />
+					<label>SS#</label><input type="text" id="ss" />
+					<label>City:</label><select id="sel"></select>
+					<label>State:</label><input type="text" id="state" />
+					<label>Zipcode:</label><input type="text" id="zip" />
+
+					<fieldset id="sub">
+						<legend>Contact me by:</legend>
+						<label>Phone</label><input type="radio" name="rd" value="r1" />
+						<label>Email</label><input type="radio" name="rd" value="r2" />
+						<label>Twitter</label><input type="radio" name="rd" value="r3" />
+						<label>I agree:</label>
+						<input type="checkbox" id="chk" />
+					</fieldset>
+				</fieldset>
+			</form>
+
+			<div id="list"></div>
+		</div>
+		<div id="story">
+			<h2></h2>
+			<div></div>
+			<p></p><p></p>
+			<cite></cite>
+		</div>
+		<textarea id="ta"></textarea>
+
+	</div>
+	<small>http://clubajax.org</small>
+</body>
+</html>
