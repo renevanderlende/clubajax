@@ -12,7 +12,7 @@
 // clubajax.debugging.consoleFix
 //
 //	DESCRIPTION:
-//		Allows the ability to turn the console on anf off. Use debug=true
+//		Allows the ability to turn the console on and off. Use debug=true
 //		in a script before this loads, or in the page url, like:
 //			http://mypage/index.html?debug=true
 //		Without debug=true in one of these two places, the console is turned off
