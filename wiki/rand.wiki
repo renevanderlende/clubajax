@@ -169,7 +169,7 @@ rand.cap("mike wrote this."); // returns "Mike wrote this.";
 }}}
         
     * weight _(number, exponent)_
-        This method is mostly for internal use, but a _weight_ argument is used in other methods which calls this. The first argument is a float between zero and 1. The second is an exponent, which can be any number (although the decimals between 0 and 1 don't work as expected). Whole numbers or decimals over 1 can be used to weight a return closer to the beginning of a list. Negative numbers will weight the return closer to the end of a list. Decimals can be used if they are less then -1 or greater than 1.
+        This method is mostly for internal use, but a _weight_ argument is used in other methods which calls this. The first argument is a float between zero and 1. The second is an exponent, which can be any number, whole, float, or negative. Positive numbers return closer to the beginning of a list. Negative numbers will weight the return closer to the end of a list.
 {{{
 rand.weight(.5, 5); // may return 0.03125
 rand.weight(.5, -5); // may return 0.96875
