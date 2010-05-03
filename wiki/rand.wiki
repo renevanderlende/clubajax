@@ -81,6 +81,13 @@ rand.name(2); // could return "GOOGLE"
 rand.name(1); // could return "Yahoo"
 rand.name(0); // could return "cnn"
 }}}
+    * url _(useWww, extension)_
+        Returns a web address, similar to: "http://clubajax.com". Pass true to add www, like:"http://www.clubajax.com". Pass a second argument to use your own extension.
+{{{
+rand.url(); // could return "http://clubajax.com"
+rand.name(true); // could return "http://www.clubajax.com"
+rand.name(true, ".org"); // could return "http://www.clubajax.org"
+}}}
     * color _(weight)_
         Returns a random hex color. Higher weight returns closer to black, negative weight returns closer to white.
 {{{
