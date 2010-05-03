@@ -9,8 +9,6 @@
 // support:
 //		http://groups.google.com/group/clubajax
 //
-// clubajax.lang.rand
-//
 //	DESCRIPTION:
 //		A randomizer library that's great for producing mock data.
 //		Allows dozens of ways to randomize numbers, strings, words,
@@ -21,25 +19,13 @@
 //		so they aren't actual words, but look more like lorem ipsum. Change the
 //		property real to true to use "words" instead of "wurds" (it can
 //		also produce humorous results).
-
-//		Allows the ability to turn the console on anf off. Use debug=true
-//		in a script before this loads, or in the page url, like:
-//			http://mypage/index.html?debug=true
-//		Without debug=true in one of these two places, the console is turned off
-//		to prevent throwing errors in users' browsers that do not have Firebug
-//		installed.
-//
-//		Also fixes some of the annoyances with the IE8 console:
-//			-	clears the logs on reload
-//			- 	adds spaces between logged arguments
-//			- 	adds stubs for Firebug commands
 //
 // 	USAGE:
 // 		include file:
 //			<script src="clubajax/lang/rand.js"></script>
 //
 // TESTS:
-//		See tests/rand.html
+//		See demos/rand.html
 //
 (function(){
 	var vowels = "eaoiu";
@@ -170,6 +156,12 @@
 			// cse: 0 title case, 1 lowercase, 2 upper case
 			var s = this.sites[this.n(this.sites.length)];
 			return !cse ? s : cse==1 ? s.toLowerCase() : s.toUpperCase();
+		},
+
+		url: function(usewww, xt){
+			var w = usewww ? "www." : "";
+			xt = xt || ".com";
+			return "http://" + w + this.site(1) + xt;
 		},
 
 		word: function(){
