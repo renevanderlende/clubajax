@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <title>Mock Data Randomizer Demo</title>
-	<script src="../lang/rand.js"></script>
+	<script src="rand.js"></script>
     <script>
 
 
@@ -32,11 +32,13 @@
 			}
 		};
 
-		var radios = document.forms[0].rd
+		var radios = document.forms[0].rd;
+		var ra = [];
 		for(var i=0; i<radios.length;i++){
 			radios[i].checked = false;
+			ra.push(radios[i])
 		}
-		rand.element(radios).checked = "checked";
+		rand.element(ra).checked = "checked";
 
 		byId("chk").checked = rand.bool() ? "checked" : false;
 
@@ -54,18 +56,16 @@
 		var ar = [];
 		var i=3; while(i--){
 			ar.push(
-				'{site:"http://'+rand.site()+'.com",' +
-				'date:"'+rand.date({delimiter:"/", yearRange:-1})+'",' +
-				'title:"'+rand.title(3,4)+'",' +
-				'desc:"'+rand.sentences(2,3,3,5)+'"}'
+				'{"site":"http://'+rand.site()+'.com",' +
+				'"date":"'+rand.date({delimiter:"/", yearRange:-1})+'",' +
+				'"title":"'+rand.title(3,4)+'",' +
+				'"desc":"'+rand.sentences(2,3,3,5)+'"}'
 			);
 		}
 		var json = "["+ar.join(",")+"]";
-		console.log(json);
+		if(window.console) console.log(json);
 		byId("ta").value = json;
 		//console.dir(eval("("+json+")"));
-
-		//rand.json('site;date({delimiter:"/", yearRange:-1})')
 
 		var story = byId("story");
 		rand.real = true;
@@ -137,21 +137,49 @@
 			width:400px;
 			position:relative;
 		}
+		form legend{
+			font-size:12px;
+		}
 		form label{
 			display:block;
 			width:70px;
-			position:absolute;
+			float:left;
 			text-align:right;
 			padding-right:10px;
 			font-size:12px;
 			line-height:22px;
 		}
+		#sub1{
+			width:225px;
+			border:0;
+		}
 		form input, form select{
-			margin-left:75px;
+			margin-left:10px;
 			margin-bottom:10px;
-			margin-right:70px;
 			width:90px;
 		}
+
+
+
+		#sub{
+			width:100px;
+			position:absolute;
+			right:20px;
+			top:20px;
+		}
+		#sub label{
+			width:50px;
+		}
+		#sub input{
+			width:auto;
+		}
+		#ta{
+			width:400px;
+			height:100px;
+			margin-top:10px;
+		}
+
+
 		#leftPane, #story{
 			display:block;
 			float:left;
@@ -164,6 +192,7 @@
 		}
 		#wrap{
 			overflow:hidden;
+			width:900px;
 		}
 		#story{
 			font-family:"Georgia serif";
@@ -178,23 +207,6 @@
 		}
 		#story p{
 			font-size:14px;
-		}
-		#sub{
-			width:100px;
-			position:absolute;
-			right:20px;
-			top:20px;
-		}
-		#sub label{
-			width:50px;
-		}
-		#sub input{
-			margin:0 0 0 30px;
-		}
-		#ta{
-			width:400px;
-			height:100px;
-			margin-top:10px;
 		}
 		small{
 			display:block;
@@ -222,6 +234,7 @@
 			<form>
 				<fieldset>
 				<legend id="legend"></legend>
+				<fieldset id="sub1">
 					<label>First Name:</label><input type="text" id="firstname" />
 					<label>Last Name:</label><input type="text" id="lastname" />
 					<label>Date of Birth:</label><input type="text" id="dob" />
@@ -229,7 +242,7 @@
 					<label>City:</label><select id="sel"></select>
 					<label>State:</label><input type="text" id="state" />
 					<label>Zipcode:</label><input type="text" id="zip" />
-
+				</fieldset>
 					<fieldset id="sub">
 						<legend>Contact me by:</legend>
 						<label>Phone</label><input type="radio" name="rd" value="r1" />

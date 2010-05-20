@@ -9,6 +9,8 @@
 // support:
 //		http://groups.google.com/group/clubajax
 //
+// clubajax.lang.rand
+//
 //	DESCRIPTION:
 //		A randomizer library that's great for producing mock data.
 //		Allows dozens of ways to randomize numbers, strings, words,
@@ -19,13 +21,13 @@
 //		so they aren't actual words, but look more like lorem ipsum. Change the
 //		property real to true to use "words" instead of "wurds" (it can
 //		also produce humorous results).
-//
+
 // 	USAGE:
 // 		include file:
 //			<script src="clubajax/lang/rand.js"></script>
 //
 // TESTS:
-//		See demos/rand.html
+//		See tests/rand.html
 //
 (function(){
 	var vowels = "eaoiu";
