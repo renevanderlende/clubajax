@@ -138,7 +138,7 @@
 		},
 
 		color: function(w){
-			return "#"+this.n(255, w).toString(16)+this.n(255, w).toString(16)+this.n(255, w).toString(16);
+			return "#"+this.pad(this.n(255, w).toString(16))+this.pad(this.n(255, w).toString(16))+this.pad(this.n(255, w).toString(16));
 		},
 
 		chars:function(min, max, w){
