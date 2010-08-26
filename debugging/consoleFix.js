@@ -1,70 +1,67 @@
-// Club AJAX General Purpose Code
-//
-// Fix Console
-//
-// author:
-//		Mike Wilcox
-// site:
-//		http://clubajax.org
-// support:
-//		http://groups.google.com/group/clubajax
-//
-// clubajax.debugging.consoleFix
-//
-//	DESCRIPTION:
-//		Allows the ability to turn the console on and off. Use debug=true
-//		in a script before this loads, or in the page url, like:
-//			http://mypage/index.html?debug=true
-//		Without debug=true in one of these two places, the console is turned off
-//		to prevent throwing errors in users' browsers that do not have Firebug
-//		installed.
-//
-//		Also fixes some of the annoyances with the IE8 console:
-//			-	clears the logs on reload
-//			- 	adds spaces between logged arguments
-//			- 	adds stubs for Firebug commands
-//
-// 	USAGE:
-// 		include file:
-//			<script src="clubajax/debugging/consoleFix.js"></script>
-//
-//	Just include the script and the console will work better.
-// TESTS:
-//		See tests/consoleFix.html
-//
-var debug = window.debug || /debug=true/.test(document.location.href) || false;
-
 (function(){
-	var common = "info,warn,error,log";
-	var more = "debug,time,timeEnd,assert,count,trace,dir,dirxml,group,groupEnd,groupCollapsed,exception";
-	var fixIE = function(){
-		var calls = common.split(",");
-		for(var i=0;i<calls.length;i++){
-			var m = calls[i];
-			var n = "_"+calls[i]
-			console[n] = console[m];
-			console[m] = (function(){
-				var type = n;
-				return function(){
-					console[type](Array.prototype.slice.call(arguments).join(" "));
-				}
-			})();
-		}
-		// clear the console on load. This is more than a convenience - too many logs crashes it.
-		// If closed it throws an error
-		try{ console.clear(); }catch(e){}
-	}
-	var hideCalls = function(str){
-		var calls = str.split(",");
-		if(!window.console) console = {};
-		for(var i=0;i<calls.length;i++){
-			console[calls[i]] = function(){};
-		}
-	}
-	if(debug && /Trident/.test(window.navigator.userAgent)){
-		fixIE();
-		hideCalls(more);
-	}else if(!debug || !window.console){
-		hideCalls(more+","+common);
-	}
+var _1=window.debug||/debug=true/.test(document.location.href)||false;
+var _2=window.loglimit||299;
+window.loglimit=_2;
+if(!window.console){
+console={};
+}
+var _3="info,error,log,warn";
+var _4="debug,time,timeEnd,assert,count,trace,dir,dirxml,group,groupEnd,groupCollapsed,exception";
+var _5=function(){
+var _6=_3.split(",");
+for(var i=0;i<_6.length;i++){
+var m=_6[i];
+var n="_"+_6[i];
+console[n]=console[m];
+console[m]=(function(){
+var _7=n;
+return function(){
+_2--;
+if(_2==0){
+console._log("***LOG LIMIT OF "+loglimit+" HAS BEEN REACHED***");
+}
+if(_2<1){
+return;
+}
+console[_7](Array.prototype.slice.call(arguments).join(" "));
+};
 })();
+}
+try{
+console.clear();
+}
+catch(e){
+}
+};
+var _8=function(){
+console._log=console.log;
+console.log=console.debug=console.info=console.warn=console.error=function(){
+var a=[];
+for(var i=0;i<arguments.length;i++){
+a.push(arguments[i]);
+}
+console._log(a.join(" "));
+};
+};
+var _9=function(_a){
+var _b=_a.split(",");
+for(var i=0;i<_b.length;i++){
+console[_b[i]]=function(){
+};
+}
+};
+var ua=window.navigator.userAgent;
+if(_1&&/Trident/.test(ua)){
+_5();
+_9(_4);
+}else{
+if(_1&&/iPad|iPhone/.test(ua)){
+_8();
+}else{
+if((/IE/.test(ua)&&!/Trident/.test(ua))||!_1||!window.console){
+_9(_4+","+_3);
+}
+}
+}
+})();
+
