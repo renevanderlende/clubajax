@@ -11,20 +11,29 @@
     </style>
     <script src="../debugging/consoleFix.js"></script>
     <script>
-        console.log("Test LOG", "Test", "running", "arguments", "together");
-        console.info("Test INFO");
-        console.warn("Test WARN");
-        console.debug("Test DEBUG");
-        console.error("Test ERROR");
-        console.time("foo time");
-        console.assert(true == true);
-        console.count();
-        console.group("myGroup");
-        console.log("group me 1");
-        console.groupEnd();
-        console.timeEnd("foo time");
-        console.trace();
+        var runTest = function(){
+            var e = new Error("This is a dummy error object");
+            console.log("Test LOG", "Test", "running", "arguments", "together");
+            console.warn("Test WARN", {a:1});
+            console.error("Test ERROR", e);
+            console.info("Test INFO", 1, 2, 3);
+            console.debug("Test DEBUG", 1, 2, 3);
+            console.time("foo time");
+            console.assert(true == true);
+            console.count();
+            console.group("myGroup");
+            console.log("group me 1");
+            console.groupEnd();
+            console.groupCollapsed();
+            console.log("group log");
+            console.log("group log");
+            console.log("group log");
+            console.groupEnd();
 
+            console.timeEnd("foo time");
+            console.trace();
+        }
+        runTest();
     </script>
 </head>
 <body>
@@ -32,31 +41,25 @@
     <p>
         To see this test work, a console should be open. To turn the logs on and off for this page, click the following link:
     </p>
-    <p id="link"></p>
+    <p id="link">&nbsp;</p>
     <script>
+        window.debug = /debug/.test(document.location.href);
         var link = window.debug ? "consoleFix.html" : "consoleFix.html?debug=true";
         var txt = window.debug ? "Hide Logs" : "Show Logs";
         document.getElementById("link").innerHTML = '<a href="'+link+'">'+txt+'</a>';
     </script>
     <p>
-        Console Fix is designed to do two things:
-        <ol>
-            <li>
-                <strong>Fix the IE 8 Console.</strong>
-                It sucks. It doesn't put spaces between arguments so they all run together.
-                But worse, when you refresh the page it doesn't clear the console. This is not just inconvenient.
-                If there are too many logs in the IE console, it will slow to a crawl and sometimes crash.
-                consoleFix addresses both of these problems.
-            </li>
-            <li>
-                <strong>Allow for the console to be turned off in all browsers.</strong>
-                It's common in development to accidentally leave console statements in your code,
-                deploy to production, and then find that it doesn't work on someone else's computer who doesn't have
-                Firebug installed. By including consoleFix.js the console is turned off by default.
-                To turn it on, simply include debug=true in a script before the consoleFix.js script, or add debug=true in the page URL.
-
-            </li>
-        </ol>
+        Console Fix is designed to:
     </p>
+    <ul>
+        <li>Clears IE8 logs on refresh</li>
+        <li>Adds empty methods for all Firebug commands not supported in IE</li>
+        <li>Fixes lack of space between log arguments in IE</li>
+        <li>Limits the number of messages logged in IE to prevent crash</li>
+        <li>Nullifies all console methods for deployment</li>
+        <li>Nullifies console methods if they don't exist (<code>trace, groupCollapsed</code>)</li>
+        <li>Fixes the multi-argument problem in iOS</li>
+    </ul>
+    
 </body>
 </html>

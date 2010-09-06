@@ -68,13 +68,16 @@
 
 	var fixMobile = function(){
 		// iPad and iPhone use the crappy old Safari debugger.
-		console._log = console.log;
-		console.log = console.debug = console.info = console.warn = console.error = function(){
-			var a = [];
-			for(var i=0;i<arguments.length;i++){
-				a.push(arguments[i])
-			}
-			console._log(a.join(" "));
+		var calls = common.split(",");
+		for(var i=0;i<calls.length;i++){
+			(function(){
+				var m = calls[i];
+				var n = "_"+calls[i]
+				console[n] = console[m];
+				console[m] = function(){
+					console[n](Array.prototype.slice.call(arguments).join(" "));
+				};
+			})();
 		}
 	}
 
@@ -85,14 +88,24 @@
 		}
 	}
 
+	var tweak = function(){
+		var calls = more.split(",");
+		for(var i=0;i<calls.length;i++){
+			if(!console[calls[i]]) console[calls[i]] = function(){};
+		}
+	}
+
 	var ua = window.navigator.userAgent;
 	if(dbg && /Trident/.test(ua)){
 		fixIE();
 		hideCalls(more);
-	}else if(dbg && /iPad|iPhone/.test(ua)){
+	}else if(dbg && /WebKit|iPad|iPhone/.test(ua)){
 		fixMobile();
-	}else if((/IE/.test(ua) && !/Trident/.test(ua)) || !dbg || !window.console){
+		tweak();
+	}else if((/IE/.test(ua) && !/Trident/.test(ua)) || !dbg || !window.console){ // IE6 or no console
 		hideCalls(more+","+common);
+	}else{
+		tweak();
 	}
-	//console.log("test log")
+
 })();
