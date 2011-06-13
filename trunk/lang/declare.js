@@ -48,7 +48,7 @@
 //
 //		var CustomClass = declare(Foo, Bar, Zap);
 //
-//		
+//
 declare = function(){
 	var i, a = arguments, constructors = [], subclasses = [], declaredClass;
 
@@ -65,7 +65,7 @@ declare = function(){
 			if(/^[A-Z]/.test(n)){
 				constructors.push(a[i][n]);
 				subclasses.push(n);
-				if(!declaredClass) declaredClass = n;
+				declaredClass = n;
 			}else if(n == "init" || n == "constructor"){
 				constructors.push(a[i][n]);
 				subclasses.push(n);
@@ -73,6 +73,13 @@ declare = function(){
 				Class.prototype[n] = a[i][n];
 			}
 		}
+	}
+
+	Class.prototype.isClass = function(cls){
+		return this.declaredClass === cls;
+	}
+	Class.prototype.isSubclass = function(cls){
+		return (new RegExp(cls)).test(this.subclasses.join(","));
 	}
 	return Class;
 }
