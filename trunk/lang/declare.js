@@ -50,36 +50,37 @@
 //
 //
 declare = function(){
-	var i, a = arguments, constructors = [], subclasses = [], declaredClass;
+		var i, a = arguments, constructors = [], classes = [];
 
 	var Class = function(){
-		this.subclasses = subclasses;
-		this.declaredClass = declaredClass;
+		this.classes = classes;
 		for(i=0; i<=constructors.length-1 ; i++){
 			constructors[i].apply(this, arguments);
 		}
 	}
 
+	Class.prototype = {
+		isClass: function(cls){
+			return this.classes[this.classes.length -1] === cls;
+		},
+		isSubclass: function(cls){
+			for(var i=0;i<this.classes.length;i++){
+				if(this.classes[i] === cls) return true;
+			}
+			return false
+		}
+	};
+
 	for(i=a.length-1;i>=0;i--){
 		for(var n in a[i]){
 			if(/^[A-Z]/.test(n)){
 				constructors.push(a[i][n]);
-				subclasses.push(n);
-				declaredClass = n;
-			}else if(n == "init" || n == "constructor"){
-				constructors.push(a[i][n]);
-				subclasses.push(n);
+				classes.push(n);
 			}else{
 				Class.prototype[n] = a[i][n];
 			}
 		}
 	}
 
-	Class.prototype.isClass = function(cls){
-		return this.declaredClass === cls;
-	}
-	Class.prototype.isSubclass = function(cls){
-		return (new RegExp(cls)).test(this.subclasses.join(","));
-	}
 	return Class;
 }
